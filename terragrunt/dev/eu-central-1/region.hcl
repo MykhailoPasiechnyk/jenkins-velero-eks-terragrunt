@@ -2,5 +2,5 @@
 # configure the remote state bucket and pass forward to the child modules as inputs.
 locals {
   aws_region    = "eu-central-1"
-  velero_bucket = "velero-backup-mpasi"
+  velero_bucket = "velero-backup-test" # bucket for velero backups
 }

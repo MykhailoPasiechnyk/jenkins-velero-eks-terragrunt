@@ -18,7 +18,7 @@ remote_state {
   }
 
   config = {
-	bucket 	= "test-terragrunt-state-bucket" # set your bucket name
+	bucket 	= "test-terragrunt-state-bucket" # bucket for tf state files
 	region	= "eu-central-1"
 	key 	= "${path_relative_to_include()}/terraform.tfstate"
 	encrypt = true
