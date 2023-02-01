@@ -1,3 +1,5 @@
+## Preparatory stage
+
 ### Installation:
 - __[Git](https://git-scm.com/downloads)__
 - __[Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)__
@@ -79,3 +81,18 @@ $ aws s3api delete-bucket --bucket $VELERO_BUCKET_NAME --region $VELERO_BUCKET_R
 ```
 $ aws iam create-user --user-name velero
 ```
+#### Create an access key for the user:
+```
+$ aws iam create-access-key --user-name velero
+``` 
+#### Create a Velero-specific credentials file (credentials-velero) in ./terragrunt/dev/eu-central-1/05-velero/ directory:
+```
+[default]
+aws_access_key_id=<AWS_ACCESS_KEY_ID>
+aws_secret_access_key=<AWS_SECRET_ACCESS_KEY>
+```
+Note: Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from previous step
+
+---
+---
+
