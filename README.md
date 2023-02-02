@@ -1,4 +1,4 @@
-## Preparatory stage
+# Preparatory stage
 
 ### Installation:
 - __[Git](https://git-scm.com/downloads)__
@@ -32,7 +32,7 @@ $ cd jenkins-velero-eks-terragrunt
 ---
 
 ### Set credentials for AWS CLI:
-After this command enter your AWS Credentials:
+*__Note__:After this command enter your AWS Credentials.*
 ```
 $ aws configure
 ```
@@ -65,7 +65,7 @@ $ aws s3api delete-bucket --bucket $TF_STATE_BUCKET_NAME --region $TF_STATE_BUCK
 ```
 ---
 ### Create AWS S3 Bucket for Velero backups:
-__Note:__: Use the same region for bucket and cluster.
+*__Note:__: Use the same region for bucket and cluster.*
 ```
 $ aws s3api create-bucket --bucket $VELERO_BUCKET_NAME --region $VELERO_BUCKET_REGION
 ```
@@ -91,8 +91,63 @@ $ aws iam create-access-key --user-name velero
 aws_access_key_id=<AWS_ACCESS_KEY_ID>
 aws_secret_access_key=<AWS_SECRET_ACCESS_KEY>
 ```
-Note: Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from previous step
+*__Note__: Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from previous step*
 
 ---
+### Set 'user name' and 'password' for Jenkins admin user:
+*In ./terragrunt/dev/eu-central-1/04-jenkins/terraform.tfvars*
+```
+jenkins_admin_user     = "user name"
+jenkins_admin_password = "password"
+```
+---
+# Run-All Resources
+---
+*In folder ./terragrunt/dev/:*
+```
+$ terragrunt run-all apply
+```
+---
+## Update kubeconfig for cluster access:
+```
+$ aws eks update-kubeconfig --region eu-central-1 --name cluster
+```
+*Note: You can change the cluster name in ./terragrunt/dev/eu-central-1/02-eks/terraform.tfvars*
+
+---
+## Get entrypoint to Jenkins:
+```
+$ kubectl get svc -n jenkins
+```
+---
+# Velero:
+
+## Create backup and restore your cluster:
+*Note: Backups and restores keeps in your S3 Velero Bucket*
+
+1. Create backup your cluster:
+*Note: The name of backup must be unique.*
+```
+$ velero backup create 'backup name'
+```
+2. Create clean K8S Cluster with Velero and update kubeconfig.
+3. Restore old cluster to new:
+```
+$ velero restore create --from-backup 'backup name'
+```
+## Get all backups:
+```
+$ velero backup get
+```
+
+## Get all restores:
+```
+$ velero restore get
+```
 ---
 
+# Clean up all resources:
+*Note: In ./terragrunt/dev/ folder:*
+```
+$ terragrunt run-all destroy
+```
