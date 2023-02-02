@@ -32,7 +32,8 @@ $ cd jenkins-velero-eks-terragrunt
 ---
 
 ### Set credentials for AWS CLI:
-*__Note__:After this command enter your AWS Credentials.*
+*__Note:__ After this command enter your AWS Credentials.*
+
 ```
 $ aws configure
 ```
@@ -66,6 +67,7 @@ $ aws s3api delete-bucket --bucket $TF_STATE_BUCKET_NAME --region $TF_STATE_BUCK
 ---
 ### Create AWS S3 Bucket for Velero backups:
 *__Note:__: Use the same region for bucket and cluster.*
+
 ```
 $ aws s3api create-bucket --bucket $VELERO_BUCKET_NAME --region $VELERO_BUCKET_REGION
 ```
@@ -96,6 +98,7 @@ aws_secret_access_key=<AWS_SECRET_ACCESS_KEY>
 ---
 ### Set 'user name' and 'password' for Jenkins admin user:
 *In ./terragrunt/dev/eu-central-1/04-jenkins/terraform.tfvars*
+
 ```
 jenkins_admin_user     = "user name"
 jenkins_admin_password = "password"
@@ -104,6 +107,7 @@ jenkins_admin_password = "password"
 # Run-All Resources
 ---
 *In folder ./terragrunt/dev/:*
+
 ```
 $ terragrunt run-all apply
 ```
@@ -112,7 +116,7 @@ $ terragrunt run-all apply
 ```
 $ aws eks update-kubeconfig --region eu-central-1 --name cluster
 ```
-*Note: You can change the cluster name in ./terragrunt/dev/eu-central-1/02-eks/terraform.tfvars*
+*__Note:__ You can change the cluster name in ./terragrunt/dev/eu-central-1/02-eks/terraform.tfvars*
 
 ---
 ## Get entrypoint to Jenkins:
@@ -123,10 +127,11 @@ $ kubectl get svc -n jenkins
 # Velero:
 
 ## Create backup and restore your cluster:
-*Note: Backups and restores keeps in your S3 Velero Bucket*
+*__Note:__ Backups and restores keeps in your S3 Velero Bucket*
 
 1. Create backup your cluster:
-*Note: The name of backup must be unique.*
+*__Note:__ The name of backup must be unique.*
+
 ```
 $ velero backup create 'backup name'
 ```
@@ -147,7 +152,8 @@ $ velero restore get
 ---
 
 # Clean up all resources:
-*Note: In ./terragrunt/dev/ folder:*
+*__Note:__ In ./terragrunt/dev/ folder:*
+
 ```
 $ terragrunt run-all destroy
 ```
